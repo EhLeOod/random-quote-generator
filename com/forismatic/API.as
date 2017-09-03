@@ -1,0 +1,117 @@
+﻿package com.forismatic
+{
+	
+	import flash.net.*;
+	import flash.events.*;
+	
+	public class API extends EventDispatcher
+	{
+		//**************************************************************************************************************************************
+		//**************************************************************************************************************************************
+		//**************************************************************************************************************************************
+		
+		public var quote:Object;
+		public var errorMessage:String;
+		
+		private var isLoading:Boolean;
+		private var api:URLLoader;
+		private var apiRequest:URLRequest;
+		
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		public function API(lang = 'ru')
+		{
+			isLoading = false;
+			quote = {};
+			
+            api = new URLLoader();
+            api.addEventListener(Event.COMPLETE, parseQuote);
+            api.addEventListener(IOErrorEvent.IO_ERROR, onConnectionError);
+            api.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onConnectionError);
+			
+            apiRequest = new URLRequest('http://api.forismatic.com/api/1.0/');
+            apiRequest.method = URLRequestMethod.POST;
+            apiRequest.data = new URLVariables();
+            apiRequest.data.method = "getQuote";
+            apiRequest.data.lang = lang;
+            apiRequest.data.format = "xml";
+		}
+		
+		
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		public function getQuote(key = '')
+		{
+			if( isLoading ) {return}
+			
+			isLoading = true;
+			apiRequest.data.key = key;
+            api.load(apiRequest);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private function parseQuote(e)
+        {
+			try{
+	            var q = new XML(api.data);
+			}
+			catch(e){
+				errorMessage = "can't parse server response: \""+api.data+'"';
+				onConnectionError();
+				return;
+			}
+			
+            q.ignoreWhitespace = true;
+			
+			if(!q.quote.quoteText.children().toString())
+			{
+				errorMessage = "can't parse server response: \""+api.data+'"';
+				onConnectionError();
+				return;
+			}
+			
+			errorMessage = '';
+            quote = {
+						"quoteText":q.quote.quoteText.children().toString(), 
+						"quoteAuthor":q.quote.quoteAuthor.children().toString(), 
+						"senderName":q.quote.senderName.children().toString(), 
+						"senderLink":q.quote.senderLink.children().toString()
+					};
+					
+            dispatchEvent(new Event(Event.COMPLETE));
+        }
+
+
+		
+		
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		private function onConnectionError(e=null)
+		{
+			errorMessage = (errorMessage)?(errorMessage):('connection error');
+			dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
+			isLoading = false;
+		}
+		
+
+		
+	}
+}

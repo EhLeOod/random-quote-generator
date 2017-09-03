@@ -1,0 +1,92 @@
+body{background-color: #28A52F;}
+
+h1 {
+text-align: center;
+color:whitesmoke;
+margin-bottom: 30px;
+margin-top: 30px;
+}
+
+.optional {display: none;}
+
+footer {
+	padding: 2em;
+	text-align: center;
+}
+
+ul.side-nav li a{ 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.smallerr-image {
+  width: 135px;
+}
+
+.thin-black-border {
+  border-color: white;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 50%;
+} 
+
+ul.side-nav li a:hover{ 
+  overflow: visible;
+}
+
+.quotes {
+  width:75%;
+  height:50%;
+  background-color:rgba(255, 0, 0, 0.00);
+  border-style: solid;
+  border-color:white;
+  border-width:6px;
+  font-size:30px;
+  color: white;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+  padding:20px;
+ 
+  /* overflow-wrap: break-word; */
+  /* word-break: keep-all;  */
+  /* white-space: pre-line; */
+  /* word-wrap: ; */
+}
+
+.btn {
+  width:35%;
+  background-color:rgba(255, 0, 0, 0.00);
+  border-style: solid;
+  border-color:white;
+  border-width:6px;
+  font-size:20px;
+  color: white;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+  margin-bottom: 10px;
+  padding:20px;
+  height:auto;
+  white-space: pre-wrap;
+  text-align: center;
+}
+
+ .text-center {
+text-align:center;
+
+ }
+
+ .tweet {
+   width:200px;
+   height: auto;
+   margin-left: auto;
+   margin-right:auto;
+   border-color:#28A52F ;
+   border-style:solid;
+   border-width: .01px;
+   text-align: center;
+   background: transparent;
+ 
+   
+ }
